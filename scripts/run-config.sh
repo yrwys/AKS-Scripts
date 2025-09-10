@@ -243,14 +243,6 @@ process_controlplane_nodes() {
         echo "⚠️  Skipped applying config for $hostname."
     fi
 
-    echo ""
-    read -p "Do you want display the dashboard? (y/n): " choice
-    if [[ "$choice" == "y" ]]; then
-        talosctl dashboard --talosconfig=./talosconfig --nodes "$talos_ip"
-    else
-        echo "⚠️  Skipped displaying dashboard for $hostname."
-    fi
-
     echo "------------------------------------------------------------------------------------------------------------------------------------------------------------------"
 }
 
@@ -312,14 +304,6 @@ process_worker_nodes() {
         echo "⚠️  Skipped applying config for $hostname"
     fi
 
-    echo ""
-    read -p "Do you want display the dashboard? (y/n): " choice
-    if [[ "$choice" == "y" ]]; then
-        talosctl dashboard --talosconfig=./talosconfig --nodes "$talos_ip"
-    else
-        echo "⚠️  Skipped displaying dashboard for $hostname"
-    fi
-
     echo "------------------------------------------------------------------------------------------------------------------------------------------------------------------"
 }
 
@@ -366,21 +350,23 @@ fi
 
 env_file="${cluster_name}.sh"
 
-echo "export VIP=$vip" >> "${env_file}"
+{
+    echo "export VIP=$vip"
 
-node_index=1
+    for ((i=0; i<cp_nodes; i++)); do
+        varname=$(echo "${controlplane_hostnames[$i]}" | tr '-' '_')
+        echo "export ${varname}=${controlplane_talos_ips[$i]}"
+    done
 
-for ((i=0; i<cp_nodes; i++)); do
-    padded=$(printf "P%02d" "$node_index")
-    echo "export ${padded}_IP=${controlplane_talos_ips[$i]}"   >> "${env_file}"
-    ((node_index++))
-done
+    for ((i=0; i<worker_nodes; i++)); do
+        varname=$(echo "${worker_hostnames[$i]}" | tr '-' '_')
+        echo "export ${varname}=${worker_talos_ips[$i]}"
+    done
 
-for ((i=0; i<worker_nodes; i++)); do
-    padded=$(printf "P%02d" "$node_index")
-    echo "export ${padded}_IP=${worker_talos_ips[$i]}"   >> "${env_file}"
-    ((node_index++))
-done
+    echo ""
+    echo "talosctl config context $cluster_name"
+    echo "kubectx admin@$cluster_name"
+} > "${env_file}"
 
 echo -e "\nℹ️  Environment variables saved to: ${env_file}"
 echo "⚠️  Run this command: source ${env_file}"

@@ -4,6 +4,13 @@ set -euo pipefail
 echo "🚀 Installing Prerequisite Tools..."
 
 # --------------------------------------
+# 0️⃣ Install base dependencies
+# --------------------------------------
+echo -e "\n🔹 Installing base dependencies..."
+sudo apt update -y
+sudo apt install -y curl wget tar apt-transport-https gnupg lsb-release
+
+# --------------------------------------
 # 1️⃣ Install talosctl
 # --------------------------------------
 echo -e "\n🔹 Installing talosctl..."
@@ -41,12 +48,17 @@ rm cilium-linux-amd64.tar.gz
 # 5️⃣ Install k9s
 # --------------------------------------
 echo -e "\n🔹 Installing k9s..."
-curl -sS https://webinstall.dev/k9s | bash
+wget https://github.com/derailed/k9s/releases/latest/download/k9s_linux_amd64.deb && apt install ./k9s_linux_amd64.deb && rm k9s_linux_amd64.deb
 
-# Load envman and bash settings (optional)
-if [[ -f "$HOME/.config/envman/load.sh" ]]; then
-    source "$HOME/.config/envman/load.sh"
-fi
-source ~/.bashrc || true
+# --------------------------------------
+# 6️⃣ Install kubectx
+# --------------------------------------
+echo -e "\n🔹 Installing kubectx & kubens..."
+KUBECTX_VERSION=$(curl -s https://api.github.com/repos/ahmetb/kubectx/releases/latest \
+  | grep tag_name | cut -d '"' -f 4)
+curl -LO "https://github.com/ahmetb/kubectx/releases/download/${KUBECTX_VERSION}/kubectx_${KUBECTX_VERSION}_linux_x86_64.tar.gz"
+tar -xzf "kubectx_${KUBECTX_VERSION}_linux_x86_64.tar.gz"
+sudo mv kubectx /usr/local/bin/
+rm "kubectx_${KUBECTX_VERSION}_linux_x86_64.tar.gz"
 
 echo -e "\n✅ All tools installed successfully!"
