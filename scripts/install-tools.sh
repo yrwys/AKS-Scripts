@@ -48,7 +48,7 @@ rm cilium-linux-amd64.tar.gz
 # 5️⃣ Install k9s
 # --------------------------------------
 echo -e "\n🔹 Installing k9s..."
-wget https://github.com/derailed/k9s/releases/latest/download/k9s_linux_amd64.deb && apt install ./k9s_linux_amd64.deb && rm k9s_linux_amd64.deb
+wget https://github.com/derailed/k9s/releases/latest/download/k9s_linux_amd64.deb && apt install ./k9s_linux_amd64.deb && rm k9s_linux_amd64.deb && rm LICENSE
 
 # --------------------------------------
 # 6️⃣ Install kubectx
