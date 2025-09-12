@@ -48,7 +48,7 @@ rm cilium-linux-amd64.tar.gz
 # 5️⃣ Install k9s
 # --------------------------------------
 echo -e "\n🔹 Installing k9s..."
-wget https://github.com/derailed/k9s/releases/latest/download/k9s_linux_amd64.deb && apt install ./k9s_linux_amd64.deb && rm k9s_linux_amd64.deb && rm LICENSE
+wget https://github.com/derailed/k9s/releases/latest/download/k9s_linux_amd64.deb && apt install ./k9s_linux_amd64.deb && rm k9s_linux_amd64.deb
 
 # --------------------------------------
 # 6️⃣ Install kubectx
@@ -60,5 +60,6 @@ curl -LO "https://github.com/ahmetb/kubectx/releases/download/${KUBECTX_VERSION}
 tar -xzf "kubectx_${KUBECTX_VERSION}_linux_x86_64.tar.gz"
 sudo mv kubectx /usr/local/bin/
 rm "kubectx_${KUBECTX_VERSION}_linux_x86_64.tar.gz"
+rm LICENSE
 
 echo -e "\n✅ All tools installed successfully!"
