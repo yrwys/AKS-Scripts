@@ -53,7 +53,7 @@ wget https://github.com/derailed/k9s/releases/latest/download/k9s_linux_amd64.de
 # --------------------------------------
 # 6️⃣ Install kubectx
 # --------------------------------------
-echo -e "\n🔹 Installing kubectx & kubens..."
+echo -e "\n🔹 Installing kubectx..."
 KUBECTX_VERSION=$(curl -s https://api.github.com/repos/ahmetb/kubectx/releases/latest \
   | grep tag_name | cut -d '"' -f 4)
 curl -LO "https://github.com/ahmetb/kubectx/releases/download/${KUBECTX_VERSION}/kubectx_${KUBECTX_VERSION}_linux_x86_64.tar.gz"
