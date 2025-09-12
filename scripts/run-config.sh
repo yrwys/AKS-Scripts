@@ -368,5 +368,4 @@ env_file="${cluster_name}.sh"
     echo "kubectx admin@$cluster_name"
 } > "${env_file}"
 
-echo -e "\nℹ️  Environment variables saved to: ${env_file}"
 echo "⚠️  Run this command: source ${env_file}"
